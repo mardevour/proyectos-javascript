@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="stylesheet" href="https://www.nerdfonts.com/assets/css/webfont.css">
+    
+    <title>Generador de contraseñas</title>
+
+<style>
+
+    :root {
+        --bg: #1f1f1f;
+        --fg: #22f4ae;
+        --red: #ff5555;
+    }
+
+    body {
+        background-color: var(--bg);
+        padding: 0px;
+        margin: 0px;
+    }
+
+    h1 {
+        color: var(--fg);
+        text-align: center;
+    }
+
+    main {
+        color: var(--fg);
+        text-align: center;
+    }
+
+    #long {
+        max-width: 50px;
+    }
+
+    #conf {
+        margin: auto;
+        max-width: 20vw;
+        margin-top: 5px;
+        text-align: left;
+    }
+
+    @media (max-width: 900px) {
+        #conf {
+            max-width: 50vw;
+        }        
+    }
+
+    #warning {
+        color: var(--red);
+        background-color: #ff555511;
+        font-size: 20px;
+        border: solid 3px;
+        padding: 10px;
+        margin-top: 10px;
+        margin-left: 20vw;
+        margin-right: 20vw;
+    }
+
+</style>
+<script type="module">
+
+    // elementos
+    let texto = document.getElementById('passwd');
+    const boton = document.getElementById('generar');
+    let longitud = document.getElementById('long');
+    let warning = document.getElementById('warning');
+    let contraseña = '';
+
+    // caracteres a usar en la contraseña
+    const mayus = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const minus = 'abcdefghijklmnopqrstuvwxyz';
+    const nums = '0123456789';
+    const symb = '!@#$%^&*()_+-=[]{}|;:,.<>?';
+
+    // detectar cuando se pulsa el botón
+    boton.addEventListener('click', generar);
+
+    // generar contraseña
+    function generar() {
+
+
+        // vaciar campo por si ya tiene algo
+        contraseña = '';
+
+        // comprobar que strings usar
+        let usarMayus = document.getElementById('mayus').checked;
+        let usarMinus = document.getElementById('minus').checked;
+        let usarNums = document.getElementById('nums').checked;
+        let usarSymb = document.getElementById('symb').checked;
+
+        let caracteres = '';
+        if (usarMayus) caracteres += mayus;
+        if (usarMinus) caracteres += minus;
+        if (usarNums) caracteres += nums;
+        if (usarSymb) caracteres += symb;
+
+        let long = longitud.value;
+
+        if (usarMayus == false && usarMinus == false && usarNums == false && usarSymb == false) {
+            contraseña = '';
+            texto.value = contraseña;
+            warning.style.display = "block";
+            return
+        }
+
+        for (let i = 0; i < long; i++) {
+            let random = Math.floor(Math.random() * caracteres.length);
+            contraseña += caracteres[random];
+        }
+
+        warning.style.display = "none";
+        texto.value = contraseña;
+    };
+
+</script>
+
+</head>
+<body>
+    <h1>
+        <i class="nf nf-md-form_textbox_password"></i> Generador de contraseñas
+    </h1>
+    <main>
+        <input type="text" id="passwd">
+        <button id="generar">Generar</button>
+        <div id="conf">
+            Longitud: 
+            <input type="number" id="long" value="15">
+            <br>
+            <input type="checkbox" id="mayus"> A-Z
+            <br>
+            <input type="checkbox" id="minus"> a-z
+            <br>
+            <input type="checkbox" id="nums"> 0-9
+            <br>
+            <input type="checkbox" id="symb"> !@#...
+        </div>
+        <div id="warning">
+            <i class="nf nf-fa-warning"></i>
+            Selecciona al menos un grupo de caracteres
+        </div>
+    </main>
+</body>
+</html>
